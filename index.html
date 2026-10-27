@@ -71,7 +71,7 @@ a { color: inherit; }
 }
 @keyframes pop { from { transform: scale(0.96); opacity: 0.4; } to { transform: none; opacity: 1; } }
 .win[hidden] { display: none; }
-.win.max { inset: 8px !important; width: auto !important; max-width: none; max-height: none; }
+.win.max { inset: 8px !important; width: auto !important; max-width: none; max-height: none !important; }
 .titlebar {
   display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 5px 5px 5px 10px;
   background: var(--line); cursor: grab; user-select: none; touch-action: none; flex-shrink: 0;
@@ -130,7 +130,7 @@ a { color: inherit; }
 .statusbar { padding: 6px 10px; font-size: 13px; color: var(--muted); border-top: 2px solid var(--line); flex-shrink: 0; }
 
 /* case */
-.case { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; padding: 24px; }
+.case { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 24px; padding: 24px; }
 .gallery { display: flex; flex-direction: column; gap: 12px; }
 .viewer { position: relative; aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; overflow: hidden; background: var(--desk); }
 .viewer img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -164,7 +164,8 @@ legend { padding: 0 8px; font-family: var(--px); font-size: 16px; background: va
 .stat b { font-family: var(--px); font-weight: 700; font-size: 64px; line-height: 1; }
 
 .gal-open { margin-top: 4px; }
-.cover { display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; overflow: hidden; cursor: zoom-in; background: var(--desk); }
+.case .gallery { display: flex; flex-direction: column; }
+.cover { display: block; width: 100%; flex: 1; min-height: 340px; padding: 0; border: 0; overflow: hidden; cursor: zoom-in; background: var(--desk); }
 .cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .25s; }
 .cover:hover img { transform: scale(1.02); }
 @media (prefers-reduced-motion: reduce) { .cover img { transition: none; } }
@@ -377,7 +378,7 @@ const PORTFOLIO = {
   programs: ['Adobe Creative Cloud', 'Figma', 'Excel', 'PowerPoint', 'Google Документы и Таблицы', 'ИИ-инструменты'],
   cases: [
     {
-      id: 'karniz', file: 'repositioning.doc', tools: ['Excel', 'PowerPoint', 'Adobe CC', 'Figma', 'VK · Telegram'], short: 'Репозиционирование karniz.ru',
+      id: 'karniz', file: 'repositioning.doc', cover: { src: 'images/karniz/cover.jpg' }, tools: ['Excel', 'PowerPoint', 'Adobe CC', 'Figma', 'VK · Telegram'], short: 'Репозиционирование karniz.ru',
       title: 'Из «магазина штор» во «всё для уютного дома»',
       lede: 'Как пересобрать восприятие интернет-магазина, который аудитория знает по одной категории, и через соцсети показать ему новый масштаб.',
       facts: [
@@ -406,16 +407,16 @@ const PORTFOLIO = {
         ['Результат', 'Переходы с выставки дали около 60 живых человек в розыгрыше, подписчики выросли на 38%, просмотры постов — на 91%.']
       ],
       images: [
-        { src: 'images/escar/01.jpg', thumb: 'images/escar/01-thumb.jpg', caption: 'Пост «было и стало»: кухня до замены текстиля' },
-        { src: 'images/escar/02.jpg', thumb: 'images/escar/02-thumb.jpg', caption: 'Пост «было и стало»: римская штора с принтом' },
         { src: 'images/escar/03.jpg', thumb: 'images/escar/03-thumb.jpg', caption: 'Хэллоуин-серия: римские шторы' },
         { src: 'images/escar/04.jpg', thumb: 'images/escar/04-thumb.jpg', caption: 'Хэллоуин-серия: жалюзи' },
         { src: 'images/escar/05.jpg', thumb: 'images/escar/05-thumb.jpg', caption: 'Хэллоуин-серия: плотные портьеры' },
+        { src: 'images/escar/01.jpg', thumb: 'images/escar/01-thumb.jpg', caption: 'Пост «было и стало»: кухня до замены текстиля' },
+        { src: 'images/escar/02.jpg', thumb: 'images/escar/02-thumb.jpg', caption: 'Пост «было и стало»: римская штора с принтом' },
         { src: 'images/escar/06.jpg', thumb: 'images/escar/06-thumb.jpg', caption: 'Анонс стенда на выставке HOME FEST' }
       ]
     },
     {
-      id: 'magazine', file: 'student_magazine.doc', tools: ['Онлайн-опрос', 'Excel', 'Google Документы', 'Figma', 'Adobe CC'], short: 'Студенческий журнал',
+      id: 'magazine', file: 'student_magazine.doc', cover: { fit: 'contain' }, tools: ['Онлайн-опрос', 'Excel', 'Google Документы', 'Figma', 'Adobe CC'], short: 'Студенческий журнал',
       title: 'Журнал как носитель бренда: от опроса к пилотному номеру',
       lede: 'Онлайн-журнал для студенческого сообщества отрасли — в строгом фирменном стиле и с опорой на то, что читатели сказали сами.',
       facts: [
@@ -449,6 +450,14 @@ const svgI = (k, vb = 14) => `<svg viewBox="0 0 ${vb} ${vb}" fill="none" stroke=
 const docIcon = `<svg viewBox="0 0 48 48" fill="none" stroke="#2B2620" stroke-width="2" aria-hidden="true"><path d="M10 4h20l10 10v30H10z" fill="#FFFDF7"/><path d="M30 4v10h10M16 22h16M16 28h16M16 34h10"/></svg>`;
 const check = `<svg class="check" viewBox="0 0 18 18" aria-hidden="true"><rect x="1" y="1" width="16" height="16" fill="#FFFDF7" stroke="#2B2620" stroke-width="2"/><path d="M4 9l3 3 7-7" stroke="#2B2620" stroke-width="2" fill="none"/></svg>`;
 const progIcon = `<svg viewBox="0 0 22 22" fill="none" stroke="#2B2620" stroke-width="2" aria-hidden="true"><path d="M4 2h10l4 4v14H4z" fill="#FFFDF7"/><path d="M6 11h10v6H6z" style="fill: var(--pri)"/></svg>`;
+// обложка кейса: по умолчанию первая картинка галереи; cover: { src, position, fit } меняет её
+const coverImg = c => {
+  const cv = c.cover || {}, first = c.images[0] || {};
+  const src = cv.src || first.src;
+  if (!src) return `<div class="ph">[Обложка кейса]</div>`;
+  const st = [cv.position ? `object-position:${cv.position}` : '', cv.fit ? `object-fit:${cv.fit}` : ''].filter(Boolean).join(';');
+  return `<img src="${esc(src)}" alt="${esc(first.caption || c.title)}"${st ? ` style="${st}"` : ''}>`;
+};
 const toolsRow = c => c.tools && c.tools.length ? `<div class="tools"><span>Инструменты:</span>${c.tools.map(t => `<span class="chip">${esc(t)}</span>`).join('')}</div>` : '';
 const notepadMenu = '<div class="menu-row" aria-hidden="true"><span>Файл</span><span>Правка</span><span>Формат</span><span>Справка</span></div>';
 const media = (img, alt) => img.src ? `<img src="${esc(img.src)}" alt="${esc(alt)}">` : `<div class="ph">[${esc(img.caption || 'Изображение')}]<br>добавь картинку в настройках</div>`;
@@ -537,7 +546,7 @@ PORTFOLIO.cases.forEach((c, n) => {
     <div class="case">
       <div class="gallery">
         <button class="cover sunk" type="button" data-open="gallery-${c.id}" aria-label="Открыть галерею проекта">
-          ${c.images[0] ? `<img src="${esc(c.images[0].src)}" alt="${esc(c.images[0].caption)}">` : `<div class="ph">[Обложка кейса]</div>`}
+          ${coverImg(c)}
         </button>
         <button class="btn primary gal-open" type="button" data-open="gallery-${c.id}">Открыть галерею проекта${c.images.length ? ` (${c.images.length})` : ''}</button>
       </div>
